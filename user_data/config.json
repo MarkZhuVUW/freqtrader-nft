@@ -2,7 +2,7 @@
     "$schema": "https://schema.freqtrade.io/schema.json",
     "max_open_trades": 3,
     "stake_currency": "USDT",
-    "stake_amount": 1000,
+    "stake_amount": "unlimited",
     "tradable_balance_ratio": 0.99,
     "fiat_display_currency": "USD",
     "timeframe": "5m",
@@ -51,13 +51,9 @@
             "MATIC/USDT"
         ],
         "pair_blacklist": [
-            // 屏蔽 BNB 交易对（防止把手续费用的 BNB 卖掉了）
             "(BNB)/.*",
-            // 屏蔽所有杠杆代币 (UP/DOWN/BULL/BEAR/3S/3L等) -> 必选！
             ".*(_PREMIUM|BEAR|BULL|HALF|HEDGE|UP|DOWN|[1235][SL])/.*",
-            // 屏蔽法币交易对 (EUR/GBP/AUD等，没波动)
             "(AUD|BRZ|CAD|CHF|EUR|GBP|HKD|IDR|JPY|NGN|RUB|SGD|TRY|UAH|USD|ZAR)/.*",
-            // 屏蔽稳定币交易对 (USDC/BUSD/TUSD等，没利润)
             "(BUSD|CUSDT|DAI|PAX|PAXG|SUSD|TUSD|USDC|USDP|USDT|VAI|UST)/.*"
         ]
     },

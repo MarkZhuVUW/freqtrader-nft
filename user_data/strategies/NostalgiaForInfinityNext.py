@@ -6161,7 +6161,7 @@ def chaikin_money_flow(dataframe, n=20, fillna=False) -> Series:
   mfv *= dataframe["volume"]
   cmf = mfv.rolling(n, min_periods=0).sum() / dataframe["volume"].rolling(n, min_periods=0).sum()
   if fillna:
-    cmf = cmf.replace([np.inf, -np.inf], np.nan).fillna(0)
+    cmf = cmf.replace([np.inf, -np.inf], "nan").fillna(0)
   return Series(cmf, name="cmf")
 
 
@@ -6330,7 +6330,7 @@ def pmax(df, period, multiplier, length, MAtype, src):
   pm = Series(pm_arr)
 
   # Mark the trend direction up/down
-  pmx = np.where((pm_arr > 0.00), np.where((mavalue < pm_arr), "down", "up"), np.NaN)
+  pmx = np.where((pm_arr > 0.00), np.where((mavalue < pm_arr), "down", "up"), "nan")
 
   return pm, pmx
 
@@ -6361,7 +6361,8 @@ def SSLChannels(dataframe, length=7):
   ATR = ta.ATR(dataframe, timeperiod=14)
   smaHigh = dataframe["high"].rolling(length).mean() + ATR
   smaLow = dataframe["low"].rolling(length).mean() - ATR
-  hlv = Series(np.where(dataframe["close"] > smaHigh, 1, np.where(dataframe["close"] < smaLow, -1, np.nan)))
+  hlv = Series(np.where(dataframe["close"] > smaHigh, 1.0, np.where(dataframe["close"] < smaLow, -1.0, np.nan)))
+
   hlv = hlv.ffill()
   sslDown = np.where(hlv < 0, smaHigh, smaLow)
   sslUp = np.where(hlv < 0, smaLow, smaHigh)
