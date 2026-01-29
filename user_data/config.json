@@ -1,6 +1,6 @@
 {
     "$schema": "https://schema.freqtrade.io/schema.json",
-    "max_open_trades": 3,
+    "max_open_trades": 5,
     "stake_currency": "USDT",
     "stake_amount": "unlimited",
     "tradable_balance_ratio": 0.99,
@@ -8,27 +8,37 @@
     "timeframe": "5m",
     "dry_run": true,
     "dry_run_wallet": 1000,
-    "cancel_open_orders_on_exit": false,
+    "cancel_open_orders_on_exit": true,
     "trading_mode": "spot",
     "margin_mode": "",
     "unfilledtimeout": {
-        "entry": 10,
-        "exit": 10,
+        "entry": 3,
+        "exit": 3,
         "exit_timeout_count": 0,
         "unit": "minutes"
+    },
+    "order_types": {
+        "entry": "limit",
+        "exit": "limit",
+        "emergency_exit": "market",
+        "force_entry": "market",
+        "force_exit": "market",
+        "stoploss": "limit",
+        "stoploss_on_exchange": true,
+        "stoploss_on_exchange_interval": 60,
+        "stoploss_on_exchange_limit_ratio": 0.99
     },
     "entry_pricing": {
         "price_side": "same",
         "use_order_book": true,
         "order_book_top": 1,
-        "price_last_balance": 0.0,
         "check_depth_of_market": {
-            "enabled": false,
+            "enabled": true,
             "bids_to_ask_delta": 1
         }
     },
     "exit_pricing": {
-        "price_side": "same",
+        "price_side": "other",
         "use_order_book": true,
         "order_book_top": 1
     },
@@ -36,35 +46,37 @@
         "name": "binance",
         "key": "",
         "secret": "",
-        "ccxt_config": {},
+        "ccxt_config": {"enableRateLimit": true},
         "ccxt_async_config": {},
-        "pair_whitelist": [
-            "BTC/USDT",
-            "ETH/USDT",
-            "SOL/USDT",
-            "BNB/USDT",
-            "XRP/USDT",
-            "ADA/USDT",
-            "DOT/USDT",
-            "LINK/USDT",
-            "AVAX/USDT",
-            "MATIC/USDT"
-        ],
+        "pair_whitelist": [],
         "pair_blacklist": [
             "(BNB)/.*",
             ".*(_PREMIUM|BEAR|BULL|HALF|HEDGE|UP|DOWN|[1235][SL])/.*",
             "(AUD|BRZ|CAD|CHF|EUR|GBP|HKD|IDR|JPY|NGN|RUB|SGD|TRY|UAH|USD|ZAR)/.*",
-            "(BUSD|CUSDT|DAI|PAX|PAXG|SUSD|TUSD|USDC|USDP|USDT|VAI|UST)/.*"
+            "(BUSD|CUSDT|DAI|PAX|PAXG|SUSD|TUSD|USDC|USDP|USDT|VAI|UST|FDUSD|TUSD|USDSB)/.*",
+            ".*(BTCDOM|DEFI|MVI|BLUEBIRD)/.*",
+            ".*(LUNA|FTT|USTC|ANC|MIR)/.*"
         ]
     },
-    "pairlists": [
+"pairlists": [
         {
             "method": "VolumePairList",
-            "number_assets": 20,
+            "number_assets": 70,
             "sort_key": "quoteVolume",
             "min_value": 0,
             "refresh_period": 1800
-        }
+        },
+        {"method": "AgeFilter", "min_days_listed": 14},
+        {"method": "SpreadFilter", "max_spread_ratio": 0.002},
+        {"method": "PriceFilter", "low_price_ratio": 0.001},
+        {
+            "method": "VolatilityFilter",
+            "lookback_days": 1,
+            "min_volatility": 0.02,
+            "max_volatility": 0.75,
+            "refresh_period": 86400
+        },
+        {"method": "ShuffleFilter", "seed": 42}
     ],
     "telegram": {
         "enabled": false,
@@ -77,16 +89,24 @@
         "listen_port": 8080,
         "verbosity": "error",
         "enable_openapi": false,
-        "jwt_secret_key": "df34e097e63ad43fa493344a32043a3e36defe0127e2ca087c718a3953ef6265",
-        "ws_token": "Fsu2_7TYyafH1DW-gmmA8I6a_oCE4KeALw",
-        "CORS_origins": [],
+        "jwt_secret_key": "CHANGE_THIS_TO_RANDOM_STRING_URGENT",
+        "ws_token": "CHANGE_THIS_TO_RANDOM_STRING_URGENT",
         "username": "admin",
-        "password": "admin"
+        "password": "CHANGE_THIS_PASSWORD"
     },
-    "bot_name": "freqtrade",
+    "bot_name": "nfi_next_prod",
     "initial_state": "running",
     "force_entry_enable": false,
     "internals": {
         "process_throttle_secs": 5
     }
 }
+
+
+Hi, I am not sure if concession passes for me to do this paper, will this count toward my program requirement? this is not listed in my program requirement but I do see this wording:
+
+Requirements Not Met:   Students taking the specialisation in Software Engineering must pass 180 points as listed in the Master of Engineering Studies Schedule.
+
+With the prior approval of the Head of Department, up to 45 points may be taken from appropriate 600 and 700 level courses offered at this University.
+
+I have been trying to get clarification to see if these papers not listed in my program requirement can count toward my degree, tried scheduling zoom meeting, have been ghosted, tried asking Ask Auckland, have been given vague answers.. Was just hoping to understand this as I do not see a lot of papers from my program requirement I can do and I have been rejected concession for some of the papers that actually showed up in my program requirement. I have picked out a number of COMPSCI papers I am interested in, just trying to understand if they can count toward my degree. Would you mind helping redirect my question to the appropriate person if you are not able to answer this as it is approaching semester start and I have spent 2+ months trying to get an answer and I won't be able to attend on-campus sessions until start of semester... thanks so much in advance

@@ -208,3 +208,5 @@ marimo/_lsp/
 __marimo__/
 user_data/*.sqlite
 user_data/logs/*
+research_results
+data

@@ -47,9 +47,9 @@ else:
 ##   Highly recommended to blacklist leveraged tokens (*BULL, *BEAR, *UP, *DOWN etc).                    ##
 ##   Ensure that you don't override any variables in you config.json. Especially                         ##
 ##   the timeframe (must be 5m).                                                                         ##
-##     use_sell_signal must set to true (or not set at all).                                             ##
-##     sell_profit_only must set to false (or not set at all).                                           ##
-##     ignore_roi_if_buy_signal must set to true (or not set at all).                                    ##
+##     use_exit_signal must set to true (or not set at all).                                             ##
+##     exit_profit_only must set to false (or not set at all).                                           ##
+##     ignore_roi_if_entry_signal must set to true (or not set at all).                                    ##
 ##                                                                                                       ##
 ###########################################################################################################
 ##               HOLD SUPPORT                                                                            ##
@@ -156,9 +156,9 @@ class NostalgiaForInfinityNext(IStrategy):
   process_only_new_candles = True
 
   # These values can be overridden in the "ask_strategy" section in the config.
-  use_sell_signal = True
-  sell_profit_only = False
-  ignore_roi_if_buy_signal = True
+  # [2026 核心激活] 开启补仓逻辑，对抗震荡插针
+  position_adjustment_enable = True
+  max_entry_position_adjustment = 2  # 允许在亏损时补仓 2 次
 
   # Number of candles the strategy requires before producing valid signals
   startup_candle_count: int = 480
@@ -173,6 +173,31 @@ class NostalgiaForInfinityNext(IStrategy):
     "stoploss_on_exchange_interval": 60,
     "stoploss_on_exchange_limit_ratio": 0.99,
   }
+
+  @property
+  def protections(self):
+      return [
+          {
+              "method": "StoplossGuard",
+              "lookback_period_min": 60,
+              "trade_limit": 2,
+              "stop_duration_min": 60,
+              "only_per_pair": True
+          },
+          {
+              "method": "MaxDrawdownGreater",
+              "max_drawdown": 0.05, 
+              "lookback_period_min": 1440,
+              "stop_duration_min": 360
+          },
+          {
+              "method": "LowProfitPairs",
+              "lookback_period_min": 1440,
+              "trade_limit": 4,
+              "stop_duration_min": 1440,
+              "profit_threshold": 0.0
+          }
+      ]
 
   #############################################################
 
